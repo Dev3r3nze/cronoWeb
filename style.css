@@ -1,0 +1,240 @@
+*{
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 20px;
+}
+body{
+  background-color: #242424;
+
+
+}
+@font-face {
+  font-family: "HK Gortesk";
+  src: url("HKGrotesk-Bold.otf");
+}
+
+p {
+  font-family: "HK Grotesk";
+  color: #EBEBEB;
+
+}
+
+label{
+  color:#EBEBEB;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .progreso {
+      overflow: hidden;
+      width: 1500px;
+      height: 70px;
+      -webkit-appearance: none;
+      background-color: #8EFF8E;
+      box-shadow: none;
+
+    }
+
+    .progreso::-webkit-slider-runnable-track {
+      height: 70px;
+      width: 100px;
+      -webkit-appearance: none;
+      color: #FF3838;
+
+    }
+
+    .progreso::-webkit-slider-thumb {
+      width: 10px;
+      -webkit-appearance: none;
+      height: 70px;
+      cursor: ew-resize;
+      background: #FF3838;
+
+    }
+
+}
+
+/*Cronometro en sí*/
+#tiempoText{
+  font-size: 250px;
+  margin-bottom: 46px;
+}
+#tutoText{
+  opacity: 0.6;
+  margin-top: -46px;
+  margin-bottom: 10px;
+}
+/*Desplegables en general*/
+.desplegables{
+  margin: auto;
+
+  width: 1608px;
+  box-shadow: 1px 1px 6px #252525;
+
+}
+.intervalos{
+  width: 30%;
+  float: left;
+  margin-right: 2%;
+  margin-left: 1%;
+
+
+}
+.predefinidos{
+  width: 30%;
+  float: left;
+  margin-left: 2%;
+
+}
+.apariencia{
+  width: 30%;
+  float: left;
+
+}
+
+/*Comunes en los desplegables*/
+.titulo{
+  width: 100%;
+  height: 50px;
+  background-color:#629677;
+  box-shadow: 1px 1px 6px #252525;
+
+}
+  .tituloText{
+    float: left;
+  }
+  .tituloText p{
+    margin-left: 201px;
+    margin-top: 10.5px;
+    font-size: 20px;
+
+  }
+
+  .botonCambio{
+    margin-top: 10px;
+    margin-right: 30px;
+    float: right;
+    width: 56px;
+    height: 31px;
+    background-color: #8EFF8E;
+    box-shadow: 1px 1px 6px #252525;
+    z-index: 2;
+  }
+  .botonCambio:hover{
+    cursor: pointer;
+  }
+
+  .botonCambio p{
+    margin-top: 3px;
+  }
+
+  .botones{
+    width: 100%;
+    height: 240px;
+    background-color: #C179B9;
+  }
+
+
+/*Intervalos*/
+  .btnMas5,.btnMenos5{
+    background-color: #629677;
+    width: 75px;
+    height: 75px;
+    float: left;
+    margin-top: 20px;
+    box-shadow: 1px 1px 6px #252525;
+
+  }
+    .btnMas5 p, .btnMenos5 p{
+      margin-top: 25.5px;
+    }
+    .btnMas5{
+      margin-left: 24px;
+      margin-right: 24px;
+    }
+
+  .rangoSegundosMinutos{
+    width: 222px;
+    height: 75px;
+    background-color: #629677;
+    float: right;
+    margin-right: 24px;
+    margin-left: 24px;
+    margin-top: 20px;
+    box-shadow: 1px 1px 6px #252525;
+
+  }
+    #s{
+      float: left;
+    }
+    #m{
+      float: right;
+    }
+    .rangoSegundosMinutos input{
+    width: 100px;
+    margin-top: 31px;
+    }
+  .rangoSegundosMinutos p{
+    margin-top: 25.5px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .tiempoCustom{
+    width: 436px;
+    background-color: #629677;
+    height: 100px;
+    margin-right: 24px;
+    margin-top: 29px;
+    float: right;
+    box-shadow: 1px 1px 6px #252525;
+
+  }
+    .tiempoCustom input{
+      margin-top: 36.5px;
+    }
+
+    #numberInput{
+      font-size: 12px;
+      width: 300px;
+      height: 23px;
+    }
+
+/*Apariencia*/
+
+  .color{
+    width: 205px;
+    height: 60px;
+    background-color: #629677;
+    margin-left: 24px;
+    margin-top: 20px;
+    float: left;
+    box-shadow: 1px 1px 6px #252525;
+
+  }
+    .color form{
+      margin-top: 14.5px;
+    }
+
+  #ReiniciarColoresBtn{
+    width: 108px;
+    margin-right: 30px;
+    float: right;
+    background-color: #629677;
+    box-shadow: 1px 1px 6px #252525;
+  }
+
+/*Predefinidos*/
+  .btnTiempo{
+    width: 75px;
+    height: 75px;
+    background-color: #629677;
+    float: left;
+    margin-left: 36px;
+    margin-top: 20px;
+    box-shadow: 1px 1px 6px #252525;
+
+  }
+    .btnTiempo p{
+      margin-top: 38.5px;
+    }
