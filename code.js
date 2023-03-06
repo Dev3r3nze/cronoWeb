@@ -32,7 +32,7 @@ addEventListener("load", function myFunction() {
 
 function CambiarInter() {
   if (verInter) {
-    btnsInter.style.display = "block";
+    btnsInter.style.display = "flex";
     tituloInter.style.position = "relative";
     tituloInter.style.top = "0px";
   } else {
@@ -45,7 +45,7 @@ function CambiarInter() {
 
 function CambiarApar() {
   if (verApar) {
-    btnsApar.style.display = "block";
+    btnsApar.style.display = "flex";
     tituloApar.style.position = "relative";
     tituloApar.style.top = "0px";
   } else {
@@ -58,7 +58,7 @@ function CambiarApar() {
 
 function CambiarPre() {
   if (verPre) {
-    btnsPre.style.display = "block";
+    btnsPre.style.display = "flex";
     tituloPre.style.position = "relative";
     tituloPre.style.top = "0px";
   } else {
