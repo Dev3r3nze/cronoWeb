@@ -32,16 +32,18 @@
       </div>
 
       <div class="botones" id="btnsInter">
-        <div class="btnMas5" onclick="AñadirTiempo(5)">
-          <p>+5</p>
-        </div>
-        <div class="btnMenos5" onclick="AñadirTiempo(-5)">
-          <p>-5</p>
+        <div id="btnRapidos">
+          <div class="btnMas5" onclick="AñadirTiempo(5)">
+            <p>+5</p>
+          </div>
+          <div class="btnMenos5" onclick="AñadirTiempo(-5)">
+            <p>-5</p>
+          </div>
         </div>
         <div class="rangoSegundosMinutos">
           <p id="s">S</p>
-          <p id="m">M</p>
           <input type="range" name="" value="0" min="0" max="1" step="1" id="rango" onchange="CambiarMinutos()">
+          <p id="m">M</p>
         </div>
         <div class="tiempoCustom">
           <input type="number" id="numberInput" value="" placeholder="Escribe el intervalo y se mostrará" min="0" onchange="AñadirPredefinidos(value)">
@@ -99,29 +101,37 @@
       </div>
 
       <div class="botones" id="btnsPre">
-        <div class="btnTiempo" onclick="AñadirPredefinidos(30)">
-          <p>30</p>
+        <div>
+          <div class="btnTiempo" onclick="AñadirPredefinidos(30)">
+            <p>30</p>
+          </div>
+          <div class="btnTiempo" onclick="AñadirPredefinidos(40)">
+            <p>40</p>
+          </div>
         </div>
-        <div class="btnTiempo" onclick="AñadirPredefinidos(40)">
-          <p>40</p>
+        <div>
+          <div class="btnTiempo" onclick="AñadirPredefinidos(60)">
+            <p>60</p>
+          </div>
+          <div class="btnTiempo" onclick="AñadirPredefinidos(90)">
+            <p>90</p>
+          </div>
+          </div>
+        <div>
+          <div class="btnTiempo" onclick="AñadirPredefinidos(120)">
+            <p>120</p>
+          </div>
+          <div class="btnTiempo" onclick="AñadirPredefinidos(150)">
+            <p>150</p>
+          </div>
         </div>
-        <div class="btnTiempo" onclick="AñadirPredefinidos(60)">
-          <p>60</p>
-        </div>
-        <div class="btnTiempo" onclick="AñadirPredefinidos(90)">
-          <p>90</p>
-        </div>
-        <div class="btnTiempo" onclick="AñadirPredefinidos(120)">
-          <p>120</p>
-        </div>
-        <div class="btnTiempo" onclick="AñadirPredefinidos(150)">
-          <p>150</p>
-        </div>
-        <div class="btnTiempo" onclick="AñadirPredefinidos(300)">
-          <p>300</p>
-        </div>
-        <div class="btnTiempo" onclick="AñadirPredefinidos(420)">
-          <p>420</p>
+          <div>
+            <div class="btnTiempo" onclick="AñadirPredefinidos(300)">
+            <p>300</p>
+          </div>
+          <div class="btnTiempo" onclick="AñadirPredefinidos(420)">
+            <p>420</p>
+          </div>
         </div>
       </div>
     </div>
