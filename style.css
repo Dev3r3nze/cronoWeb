@@ -58,13 +58,21 @@ label{
 
 /*Cronometro en sí*/
 #tiempoText{
-  font-size: 250px;
-  margin-bottom: 46px;
+  font-size: 200px;
 }
 #tutoText{
   opacity: 0.6;
-  margin-top: -46px;
-  margin-bottom: 10px;
+  margin-bottom: 4vh;
+}
+#btnStart{
+  box-shadow: 1px 1px 6px #252525;
+  color: #242424;
+  background-color:#629677;
+  border-radius: 0;
+  border: 0px;
+  padding: 1vh;
+  margin-top: -2vh;
+  margin-bottom: 1vh;
 }
 /*Desplegables en general*/
 .desplegables{
@@ -99,7 +107,6 @@ label{
   width: 100%;
   height: 50px;
   background-color:#629677;
-  box-shadow: 1px 1px 6px #252525;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -115,19 +122,20 @@ label{
 
   .botonCambio{
     float: right;
-    width: 4vh;
-    height: 3vh;
+    width: 6vh;
+    height: 4vh;
     background-color: #8EFF8E;
     box-shadow: 1px 1px 6px #252525;
     z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .botonCambio:hover{
     cursor: pointer;
   }
 
-  .botonCambio p{
-    margin-top: 3px;
-  }
+  
 
   .botones{
     width: 100%;
@@ -174,13 +182,7 @@ label{
     #m{
       float: right;
     }
-    .rangoSegundosMinutos input{
-      
-    }
-  .rangoSegundosMinutos p{
     
-    
-  }
 
   .tiempoCustom{
     width: 90%;
@@ -201,20 +203,20 @@ label{
 /*Apariencia*/
 
   .color{
-    width: 205px;
-    height: 60px;
+    width: 25vh;
+    height: 6vh;
     background-color: #629677;
-    
+    display: flex;
+    align-items: center;
+    justify-content: center;
     float: left;
     box-shadow: 1px 1px 6px #252525;
 
   }
-    .color form{
-      margin-top: 14.5px;
-    }
+    
 
   #ReiniciarColoresBtn{
-    width: 10vh;
+    width: 14vh;
     background-color: #629677;
     box-shadow: 1px 1px 6px #252525;
   }
