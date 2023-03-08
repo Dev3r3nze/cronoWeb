@@ -201,20 +201,29 @@ function ActualizarContador(color) {
 addEventListener("keydown", function myFunction(key) {
 
   if (key.keyCode == 32) {
-    pararTiempo = !pararTiempo;
-    document.getElementById("tutoText").style.display = "none";
-    ComprobarTiempo();
+    Start()
   }
 })
+
+function Start(){
+  pararTiempo = !pararTiempo;
+  
+  document.getElementById("tutoText").style.display = "none";
+  ComprobarTiempo();
+}
+
 
 function ComprobarTiempo() {
   if (pararTiempo) {
     clearInterval(tiempo);
     document.getElementById("tiempoText").style.opacity = 0.6;
+    document.getElementById("btnStart").style.opacity = 1
+    document.getElementById("btnStart").innerHTML = "<p>Comenzar</p>"
   } else {
     tiempo = setInterval(Tiempear, 1000);
     document.getElementById("tiempoText").style.opacity = 1;
-
+    document.getElementById("btnStart").style.opacity = 0.6
+  document.getElementById("btnStart").innerHTML = "<p>Parar</p>"
   }
 }
 
@@ -323,7 +332,7 @@ function QuitarAlertaRoja() {
 }
 
 function ReiniciarColores() {
-  document.body.style.backgroundColor = "#353535";
+  document.body.style.backgroundColor = "#242424";
   CambiarApar();
   for (var i = 0; i < document.getElementsByTagName("p").length; i++) {
     document.getElementsByTagName("p")[i].style.color = "#EBEBEB";
@@ -332,32 +341,33 @@ function ReiniciarColores() {
     document.getElementsByTagName("label")[i].style.color = "#EBEBEB";
   }
   for (var i = 0; i < document.getElementsByClassName("botones").length; i++) {
-    document.getElementsByClassName("botones")[i].style.backgroundColor = "#D9D9D9";
+    document.getElementsByClassName("botones")[i].style.backgroundColor = "##EFF8E";
   }
   for (var i = 0; i < document.getElementsByClassName("titulo").length; i++) {
-    document.getElementsByClassName("titulo")[i].style.backgroundColor = "#3C6E71";
+    document.getElementsByClassName("titulo")[i].style.backgroundColor = "#629677";
   }
   for (var i = 0; i < document.getElementsByClassName("btnTiempo").length; i++) {
-    document.getElementsByClassName("btnTiempo")[i].style.backgroundColor = "#3C6E71";
+    document.getElementsByClassName("btnTiempo")[i].style.backgroundColor = "#629677";
   }
   for (var i = 0; i < document.getElementsByClassName("color").length; i++) {
-    document.getElementsByClassName("color")[i].style.backgroundColor = "#3C6E71";
+    document.getElementsByClassName("color")[i].style.backgroundColor = "#629677";
   }
-  for (var i = 0; i < document.getElementsByClassName("botonCambio").length; i++) {
-    document.getElementsByClassName("botonCambio")[i].style.backgroundColor = "#3C6E71";
-  }
+  
+  document.getElementById("ReiniciarColoresBtn").style.backgroundColor = "#629677";
+  
   for (var i = 0; i < document.getElementsByClassName("rangoSegundosMinutos").length; i++) {
-    document.getElementsByClassName("rangoSegundosMinutos")[i].style.backgroundColor = "#3C6E71";
+    document.getElementsByClassName("rangoSegundosMinutos")[i].style.backgroundColor = "#629677";
   }
   for (var i = 0; i < document.getElementsByClassName("btnMas5").length; i++) {
-    document.getElementsByClassName("btnMas5")[i].style.backgroundColor = "#3C6E71";
+    document.getElementsByClassName("btnMas5")[i].style.backgroundColor = "#629677";
   }
   for (var i = 0; i < document.getElementsByClassName("btnMenos5").length; i++) {
-    document.getElementsByClassName("btnMenos5")[i].style.backgroundColor = "#3C6E71";
+    document.getElementsByClassName("btnMenos5")[i].style.backgroundColor = "#629677";
   }
   for (var i = 0; i < document.getElementsByClassName("tiempoCustom").length; i++) {
-    document.getElementsByClassName("tiempoCustom")[i].style.backgroundColor = "#3C6E71";
+    document.getElementsByClassName("tiempoCustom")[i].style.backgroundColor = "#629677";
   }
+  document.getElementById("btnStart").style.backgroundColor = "#629677";
 
   s = 0;
 
@@ -392,9 +402,8 @@ function CambiarColoresTarjetas(valor) {
   for (var i = 0; i < document.getElementsByClassName("color").length; i++) {
     document.getElementsByClassName("color")[i].style.backgroundColor = valor.toString();
   }
-  for (var i = 0; i < document.getElementsByClassName("botonCambio").length; i++) {
-    document.getElementsByClassName("botonCambio")[i].style.backgroundColor = valor.toString();
-  }
+  document.getElementById("ReiniciarColoresBtn").style.backgroundColor = valor.toString();
+
   for (var i = 0; i < document.getElementsByClassName("rangoSegundosMinutos").length; i++) {
     document.getElementsByClassName("rangoSegundosMinutos")[i].style.backgroundColor = valor.toString();
   }
@@ -407,6 +416,7 @@ function CambiarColoresTarjetas(valor) {
   for (var i = 0; i < document.getElementsByClassName("tiempoCustom").length; i++) {
     document.getElementsByClassName("tiempoCustom")[i].style.backgroundColor = valor.toString();
   }
+  document.getElementById("btnStart").style.backgroundColor = valor.toString();;
 
 }
 
