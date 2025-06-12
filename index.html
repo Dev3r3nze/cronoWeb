@@ -1,142 +1,80 @@
 <!DOCTYPE html>
-<html lang="es" dir="ltr">
+<html lang="es">
 
 <head>
-  <meta charset="utf-8">
-  <title>Pomodoro Timer</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="code.js">
-  </script>
-  <link href="https://www.dafontfree.net/embed/YWR1bXUtcmVndWxhciZkYXRhLzkwL2EvMTY2ODA3L0FkdW11LnR0Zg" rel="stylesheet" type="text/css"/>
-  
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cronómetro de Intervalos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
-  <div>
-    <input type="range" name="" value="" class="progreso" disabled id="progreso" min="0" step="0.1">
-  </div>
-  <div id="tiempo">
-    <p id="tiempoText">00:00</p>
-    <button onclick="Start()" id="btnStart"> <p>Comenzar</p></button>
-    <p id="tutoText">Define el tiempo de actividad (verde) y descanso (rojo) y presiona espacio para comenzar y pausar</p>
-  </div>
-  <div class="desplegables">
+<body class="bg-dark text-light d-flex flex-column justify-content-center" style="height: 100vh;">
 
-    <div class="intervalos">
-      <div class="titulo" id="tituloInter" onclick="CambiarInter()">
-        <div class="tituloText">
-          <p>Intervalos</p>
+    <div class="container">
+        <!-- Visualizador -->
+        <div id="display" class="text-center fw-bold mb-4 display-timer">00:00</div>
+        <div id="flash-overlay"></div>
+
+        <!-- Progreso -->
+        <div class="progress mb-4">
+            <div id="progress-bar" class="progress-bar bg-success" role="progressbar" style="width: 100%;"></div>
         </div>
-        <div class="botonCambio" id="btn0" onclick="CambiarColor(0)">
+
+        <!-- Controles -->
+        <div class="d-flex justify-content-center mb-5">
+            <button id="btn-toggle" class="btn custom-btn me-3">Comenzar</button>
+            <button id="btn-reset" class="btn custom-btn">Reiniciar</button>
+        </div>
+
+        <!-- Ajustes -->
+        <div class="row g-4">
+
+            <!-- Intervalos -->
+            <div class="col-md-6">
+                <div class="card bg-secondary text-light h-100">
+                    <div class="card-body">
+                        <!-- Toggle unidad -->
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" role="switch" id="unitToggle">
+                            <label class="form-check-label" for="unitToggle">Usar minutos</label>
+                        </div>
+
+                        <!-- Inputs de tiempo -->
+                        <div class="mb-3">
+                            <label for="active-input" class="form-label" id="label-active">Tiempo activo (min)</label>
+                            <input id="active-input" type="number" class="form-control" min="1" value="1">
+                        </div>
+                        <div>
+                            <label for="rest-input" class="form-label" id="label-rest">Tiempo descanso (min)</label>
+                            <input id="rest-input" type="number" class="form-control" min="1" value="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colores -->
+            <div class="col-md-6">
+                <div class="card bg-secondary text-light h-100">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="color-active" class="form-label">Color activo</label>
+                            <input id="color-active" type="color" class="form-control form-control-color w-100"
+                                value="#28a745">
+                        </div>
+                        <div>
+                            <label for="color-rest" class="form-label">Color descanso</label>
+                            <input id="color-rest" type="color" class="form-control form-control-color w-100"
+                                value="#dc3545">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
-      </div>
-
-      <div class="botones" id="btnsInter">
-        <div id="btnRapidos">
-          <div class="btnMas5" onclick="AñadirTiempo(5)">
-            <p>+5</p>
-          </div>
-          <div class="btnMenos5" onclick="AñadirTiempo(-5)">
-            <p>-5</p>
-          </div>
-        </div>
-        <div class="rangoSegundosMinutos">
-          <p id="s">S</p>
-          <input type="range" name="" value="0" min="0" max="1" step="1" id="rango" onchange="CambiarMinutos()">
-          <p id="m">M</p>
-        </div>
-        <div class="tiempoCustom">
-          <input type="number" id="numberInput" value="" placeholder="Escribe el intervalo y se mostrará" min="0" onchange="AñadirPredefinidos(value)">
-        </div>
-      </div>
     </div>
 
-    <div class="apariencia">
-      <div class="titulo" id="tituloApar" onclick="CambiarApar()">
-        <div class="tituloText">
-          <p>Apariencia</p>
-        </div>
-        <div class="botonCambio" id="ReiniciarColoresBtn" onclick="ReiniciarColores()">
-          <p>Reiniciar</p>
-        </div>
-      </div>
-
-      <div class="botones" id="btnsApar">
-        <div class="color">
-          <form class="" action="index.html" method="post">
-            <label for="">Fondo:</label>
-            <input type="color" name="" value="#353535" onchange="CambiarColoreFondo(value)">
-          </form>
-        </div>
-        <div class="color">
-          <form class="" action="index.html" method="post">
-            <label for="">Textos:</label>
-            <input type="color" name="" value="#EBEBEB" onchange="CambiarColoreTextos(value)">
-          </form>
-        </div>
-        <div class="color">
-          <form class="" action="index.html" method="post">
-            <label for="">Fondo tarjetas:</label>
-            <input type="color" name="" value="#C179B9" onchange="CambiarColoreFondoTarjetas(value)">
-          </form>
-        </div>
-        <div class="color">
-          <form class="" action="index.html" method="post">
-            <label for="">Tarjetas:</label>
-            <input type="color" name="" value="#8EFF8E" onchange="CambiarColoresTarjetas(value)">
-          </form>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="predefinidos">
-      <div class="titulo" id="tituloPre" onclick="CambiarPre()">
-        <div class="tituloText">
-          <p>Predefinidos</p>
-        </div>
-        <div class="botonCambio" id="btn1" onclick="CambiarColor(1)">
-
-        </div>
-      </div>
-
-      <div class="botones" id="btnsPre">
-        <div>
-          <div class="btnTiempo" onclick="AñadirPredefinidos(30)">
-            <p>30</p>
-          </div>
-          <div class="btnTiempo" onclick="AñadirPredefinidos(40)">
-            <p>40</p>
-          </div>
-        </div>
-        <div>
-          <div class="btnTiempo" onclick="AñadirPredefinidos(60)">
-            <p>60</p>
-          </div>
-          <div class="btnTiempo" onclick="AñadirPredefinidos(90)">
-            <p>90</p>
-          </div>
-          </div>
-        <div>
-          <div class="btnTiempo" onclick="AñadirPredefinidos(120)">
-            <p>120</p>
-          </div>
-          <div class="btnTiempo" onclick="AñadirPredefinidos(150)">
-            <p>150</p>
-          </div>
-        </div>
-          <div>
-            <div class="btnTiempo" onclick="AñadirPredefinidos(300)">
-            <p>300</p>
-          </div>
-          <div class="btnTiempo" onclick="AñadirPredefinidos(420)">
-            <p>420</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <script src="main.js"></script>
 </body>
 
 </html>
