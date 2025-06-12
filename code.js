@@ -1,433 +1,142 @@
-var s = 0,
-  m = 0,
-  h = 0;
-
-var minsActivados = false;
-var pararTiempo = true;
-
-var tiempoVerde = 0,
-  tiempoRojo = 0;
-var cambiarVerde = true,
-  estadoVerde = true;
-var tiempoVerdeInicial = 0,
-  tiempoRojoInicial = 0;
+// Elementos DOM
+const display = document.getElementById('display');
+const btnToggle = document.getElementById('btn-toggle');
+const btnReset = document.getElementById('btn-reset');
+const progressBar = document.getElementById('progress-bar');
+const inActive = document.getElementById('active-input');
+const inRest = document.getElementById('rest-input');
+const colorActive = document.getElementById('color-active');
+const colorRest = document.getElementById('color-rest');
 
 
-var verInter, verApar, verPre;
-var tituloInter, tituloApar, tituloPre, btnsPre, btnsApar, btnsInter;
+let activeSecs = 0;
+let restSecs = 0;
+let remaining = 0;
+
+let isActivePhase = true;
+let timer = null;
+
+const unitToggle = document.getElementById('unitToggle');
+const labelActive = document.getElementById('label-active');
+const labelRest = document.getElementById('label-rest');
+
+let usarSegundos = true;
+// Alerta sonora simple (puedes reemplazarlo con otro sonido si prefieres)
+const beep = new Audio("https://cdn.freesound.org/previews/362/362420_4910111-lq.mp3");
+
+// Elemento de flash overlay
+const flashOverlay = document.getElementById('flash-overlay');
 
 
-
-addEventListener("load", function myFunction() {
-  tituloInter = document.getElementById("tituloInter");
-  tituloApar = document.getElementById("tituloApar");
-  tituloPre = document.getElementById("tituloPre");
-  btnsPre = document.getElementById("btnsPre");
-  btnsApar = document.getElementById("btnsApar");
-  btnsInter = document.getElementById("btnsInter");
-  ComprobarTiempo();
-
-
-})
-
-function CambiarInter() {
-  if (verInter) {
-    btnsInter.style.display = "flex";
-    tituloInter.style.position = "relative";
-    tituloInter.style.top = "0px";
-  } else {
-    btnsInter.style.display = "none";
-    tituloInter.style.position = "relative";
-    tituloInter.style.top = "250px";
-  }
-  verInter = !verInter;
+// Convierte los valores según la unidad elegida
+function obtenerValorSegundos(input) {
+    const valor = parseInt(input.value) || 0;
+    return usarSegundos ? valor : valor * 60;
 }
 
-function CambiarApar() {
-  if (verApar) {
-    btnsApar.style.display = "flex";
-    tituloApar.style.position = "relative";
-    tituloApar.style.top = "0px";
-  } else {
-    btnsApar.style.display = "none";
-    tituloApar.style.position = "relative";
-    tituloApar.style.top = "250px";
-  }
-  verApar = !verApar;
-}
-
-function CambiarPre() {
-  if (verPre) {
-    btnsPre.style.display = "flex";
-    tituloPre.style.position = "relative";
-    tituloPre.style.top = "0px";
-  } else {
-    btnsPre.style.display = "none";
-    tituloPre.style.position = "relative";
-    tituloPre.style.top = "250px";
-  }
-  verPre = !verPre;
-}
-
-function CambiarMinutos() {
-  if (document.getElementById("rango").value == 1) {
-    minsActivados = true;
-  } else {
-    minsActivados = false;
-  }
-}
-
-let tiempo = setInterval(Tiempear, 1000);
-
-function Tiempear() {
-
-  if (minsActivados == false) {
-    s++;
-
-    if (s >= 0) {
-      var hAux, mAux, sAux;
-      if (s == 60) {
-        m++;
-        s = 0;
-      }
-      if (m == 60) {
-        h++;
-        m = 0;
-      }
-
-      if (s < 10) {
-        sAux = "0" + s;
-      } else {
-        sAux = s;
-      }
-      if (m < 10) {
-        mAux = "0" + m;
-      } else {
-        mAux = m;
-      }
-      if (h >= 1) {
-        if (h < 10) {
-          hAux = "0" + h;
-        } else {
-          hAux = h;
-        }
-        document.getElementById("tiempoText").innerHTML = hAux + ": " + mAux + ":" + sAux;
-
-      } else {
-        document.getElementById("tiempoText").innerHTML = mAux + ":" + sAux;
-      }
-    }
-  } else {
-    s++;
-    console.log(s);
-    if (s == 60) {
-      m++;
-      s = 0;
-    }
-    if (m >= 0) {
-      var hAux, mAux;
-      if (m == 60) {
-        h++;
-        m = 0;
-      }
-
-      if (m < 10) {
-        mAux = "0" + m;
-      } else {
-        mAux = m;
-      }
-      if (h < 10) {
-        hAux = "0" + h;
-      } else {
-        hAux = h;
-      }
-      document.getElementById("tiempoText").innerHTML = hAux + ":" + mAux;
-
-    }
-  }
-
-  //console.log("valorV: " + document.getElementById("progreso").value+ ", " + document.getElementById("progreso").max);
-  //console.log("tiempoVerde: "+ tiempoVerde + ", tiempoRojo: " + tiempoRojo + ", cambiarVerde: "+ cambiarVerde);
-  //console.log(estadoVerde);
-  //console.log("verde: "+ tiempoVerde+ ", rojo: "+ tiempoRojo);
-
-  switch (estadoVerde) {
-    case true:
-      if (tiempoVerde > 0) {
-        tiempoVerde--;
-        if (tiempoVerde == 0) {
-          Alerta("rojo");
-          document.getElementById("progreso").style.backgroundColor = "#FF3838";
-          var style = document.createElement("style");
-          document.head.appendChild(style);
-          sheet = style.sheet;
-          sheet.addRule('.progreso::-webkit-slider-thumb', 'background: #8EFF8E');
-          sheet.insertRule('.progreso::-webkit-slider-thumb { background: #FF3838 }', 0);
-          tiempoRojo = tiempoRojoInicial;
-          estadoVerde = false;
-        }
-      }
-      break;
-    case false:
-      if (tiempoRojo > 0) {
-        tiempoRojo--;
-        if (tiempoRojo == 0) {
-          Alerta("verde");
-          document.getElementById("progreso").style.backgroundColor = "#8EFF8E";
-          var style = document.createElement("style");
-          document.head.appendChild(style);
-          sheet = style.sheet;
-          sheet.addRule('.progreso::-webkit-slider-thumb', 'background: #FF3838');
-          sheet.insertRule('.progreso::-webkit-slider-thumb { background: #8EFF8E }', 0);
-          tiempoVerde = tiempoVerdeInicial;
-          estadoVerde = true;
-        }
-      }
-      default:
-
-  }
-  Progresar();
-}
-
-function ActualizarContador(color) {
-  if (color == "verde") {
-    document.getElementById("numberInput").value = tiempoVerde;
-  }
-  if (color == "rojo") {
-    document.getElementById("numberInput").value = tiempoRojo;
-  }
-}
-
-addEventListener("keydown", function myFunction(key) {
-
-  if (key.keyCode == 32) {
-    Start()
-  }
-})
-
-function Start(){
-  pararTiempo = !pararTiempo;
-  
-  document.getElementById("tutoText").style.display = "none";
-  ComprobarTiempo();
-}
-
-
-function ComprobarTiempo() {
-  if (pararTiempo) {
-    clearInterval(tiempo);
-    document.getElementById("tiempoText").style.opacity = 0.6;
-    document.getElementById("btnStart").style.opacity = 1
-    document.getElementById("btnStart").innerHTML = "<p>Comenzar</p>"
-  } else {
-    tiempo = setInterval(Tiempear, 1000);
-    document.getElementById("tiempoText").style.opacity = 1;
-    document.getElementById("btnStart").style.opacity = 0.6
-  document.getElementById("btnStart").innerHTML = "<p>Parar</p>"
-  }
-}
-
-function AñadirTiempo(t) {
-  if (cambiarVerde) {
-    if (t > 0) {
-      tiempoVerde += t;
-      ActualizarContador("verde");
-      tiempoVerdeInicial += t;
-    }
-    if (t < 0 && tiempoVerde != 0) {
-      tiempoVerde += t;
-      ActualizarContador("verde");
-      tiempoVerdeInicial += t;
-
-    }
-  } else {
-    if (t > 0) {
-      tiempoRojo += t;
-      ActualizarContador("rojo");
-      tiempoRojoInicial += t;
-
-    }
-    if (t < 0 && tiempoRojo != 0) {
-      tiempoRojo += t;
-      ActualizarContador("rojo");
-      tiempoRojoInicial += t;
-
-    }
-  }
-}
-
-function CambiarColor(n) {
-  if (n == 0) {
-    CambiarInter();
-
-    if (cambiarVerde) {
-      ActualizarContador("rojo");
-      document.getElementById("btn0").style.backgroundColor = "#FF3838";
-      document.getElementById("btn1").style.backgroundColor = "#FF3838";
-      cambiarVerde = false;
+// Actualiza las etiquetas según el modo seleccionado
+function actualizarEtiquetas() {
+    if (usarSegundos) {
+        labelActive.textContent = "Tiempo activo (seg)";
+        labelRest.textContent = "Tiempo descanso (seg)";
     } else {
-      ActualizarContador("verde");
-      document.getElementById("btn0").style.backgroundColor = "#8EFF8E";
-      document.getElementById("btn1").style.backgroundColor = "#8EFF8E";
-      cambiarVerde = true;
+        labelActive.textContent = "Tiempo activo (min)";
+        labelRest.textContent = "Tiempo descanso (min)";
     }
-  }
-  if (n == 1) {
-    CambiarPre()
+}
 
-    if (cambiarVerde) {
-      ActualizarContador("rojo");
-      document.getElementById("btn0").style.backgroundColor = "#FF3838";
-      document.getElementById("btn1").style.backgroundColor = "#FF3838";
-      cambiarVerde = false;
+// Evento para cambiar el tipo de unidad
+unitToggle.addEventListener('change', () => {
+    usarSegundos = unitToggle.checked;
+    actualizarEtiquetas();
+    resetTimer();
+});
+
+
+// Actualiza la interfaz basada en estado
+function updateUI() {
+    const mins = Math.floor(remaining / 60);
+    const secs = remaining % 60;
+    display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+    const total = isActivePhase ? activeSecs : restSecs;
+    const pct = (remaining / total) * 100;
+    progressBar.style.width = `${pct}%`;
+    progressBar.className = 'progress-bar';
+    progressBar.classList.add(isActivePhase ? 'bg-success' : 'bg-danger');
+
+    if (isActivePhase) {
+        progressBar.style.backgroundColor = colorActive.value;
     } else {
-      ActualizarContador("verde");
-      document.getElementById("btn0").style.backgroundColor = "#8EFF8E";
-      document.getElementById("btn1").style.backgroundColor = "#8EFF8E";
-      cambiarVerde = true;
+        progressBar.style.backgroundColor = colorRest.value;
     }
-  }
-}
 
-function Progresar() {
+    btnToggle.textContent = timer ? 'Pausar' : 'Comenzar';
 
-  if (estadoVerde) {
-    document.getElementById("progreso").max = tiempoVerdeInicial;
-    document.getElementById("progreso").value = tiempoVerde
-
-    //let mueve = setInterval(Mueve,100);
-
-  } else {
-    document.getElementById("progreso").max = tiempoRojoInicial;
-    document.getElementById("progreso").value = tiempoRojo;
-  }
-}
-
-function Mueve() {
-  console.log("mueve");
-  if (document.getElementById("progreso").value != tiempoVerde) {
-    document.getElementById("progreso").value -= 0.1;
-    clearInterval(mueve);
-  }
-}
-
-function Alerta(color) {
-  if (color == "verde") {
-    document.getElementById("tiempo").style.backgroundColor = "#8EFF8E";
-    setTimeout(QuitarAlertaVerde, 1000);
-  }
-  if (color == "rojo") {
-    document.getElementById("tiempo").style.backgroundColor = "#FF3838";
-    setTimeout(QuitarAlertaRoja, 1000);
-  }
-}
-
-function QuitarAlertaVerde() {
-  document.getElementById("tiempo").style.backgroundColor = "transparent";
-}
-
-function QuitarAlertaRoja() {
-  document.getElementById("tiempo").style.backgroundColor = "transparent";
 
 }
 
-function ReiniciarColores() {
-  document.body.style.backgroundColor = "#242424";
-  CambiarApar();
-  for (var i = 0; i < document.getElementsByTagName("p").length; i++) {
-    document.getElementsByTagName("p")[i].style.color = "#EBEBEB";
-  }
-  for (var i = 0; i < document.getElementsByTagName("label").length; i++) {
-    document.getElementsByTagName("label")[i].style.color = "#EBEBEB";
-  }
-  for (var i = 0; i < document.getElementsByClassName("botones").length; i++) {
-    document.getElementsByClassName("botones")[i].style.backgroundColor = "##EFF8E";
-  }
-  for (var i = 0; i < document.getElementsByClassName("titulo").length; i++) {
-    document.getElementsByClassName("titulo")[i].style.backgroundColor = "#629677";
-  }
-  for (var i = 0; i < document.getElementsByClassName("btnTiempo").length; i++) {
-    document.getElementsByClassName("btnTiempo")[i].style.backgroundColor = "#629677";
-  }
-  for (var i = 0; i < document.getElementsByClassName("color").length; i++) {
-    document.getElementsByClassName("color")[i].style.backgroundColor = "#629677";
-  }
-  
-  document.getElementById("ReiniciarColoresBtn").style.backgroundColor = "#629677";
-  
-  for (var i = 0; i < document.getElementsByClassName("rangoSegundosMinutos").length; i++) {
-    document.getElementsByClassName("rangoSegundosMinutos")[i].style.backgroundColor = "#629677";
-  }
-  for (var i = 0; i < document.getElementsByClassName("btnMas5").length; i++) {
-    document.getElementsByClassName("btnMas5")[i].style.backgroundColor = "#629677";
-  }
-  for (var i = 0; i < document.getElementsByClassName("btnMenos5").length; i++) {
-    document.getElementsByClassName("btnMenos5")[i].style.backgroundColor = "#629677";
-  }
-  for (var i = 0; i < document.getElementsByClassName("tiempoCustom").length; i++) {
-    document.getElementsByClassName("tiempoCustom")[i].style.backgroundColor = "#629677";
-  }
-  document.getElementById("btnStart").style.backgroundColor = "#629677";
-
-  s = 0;
-
+// Inicia o detiene el cronómetro
+function toggleTimer() {
+    if (timer) {
+        clearInterval(timer);
+        timer = null;
+    } else {
+        activeSecs = obtenerValorSegundos(inActive);
+        restSecs = obtenerValorSegundos(inRest);
+        remaining = isActivePhase ? activeSecs : restSecs;
+        updateUI();
+        timer = setInterval(tick, 1000);
+    }
+    updateUI();
 }
 
-function CambiarColoreFondo(valor) {
-  document.body.style.backgroundColor = valor.toString();
+
+// Tick cada segundo
+
+function tick() {
+    remaining--;
+    if (remaining < 0) {
+        isActivePhase = !isActivePhase;
+        activeSecs = obtenerValorSegundos(inActive);
+        restSecs = obtenerValorSegundos(inRest);
+        remaining = isActivePhase ? activeSecs : restSecs;
+
+        // Reproduce sonido
+        beep.play();
+
+        // Flash visual con color del nuevo estado
+        flashOverlay.classList.remove('flash-green', 'flash-red');
+        flashOverlay.classList.add(isActivePhase ? 'flash-green' : 'flash-red');
+        setTimeout(() => {
+            flashOverlay.classList.remove('flash-green', 'flash-red');
+        }, 400);
+    }
+    updateUI();
 }
 
-function CambiarColoreTextos(valor) {
-  for (var i = 0; i < document.getElementsByTagName("p").length; i++) {
-    document.getElementsByTagName("p")[i].style.color = valor.toString();
-  }
-  for (var i = 0; i < document.getElementsByTagName("label").length; i++) {
-    document.getElementsByTagName("label")[i].style.color = valor.toString();
-  }
+
+// Reiniciar
+function resetTimer() {
+    clearInterval(timer);
+    timer = null;
+    isActivePhase = true;
+    remaining = activeSecs;
+    updateUI();
 }
 
-function CambiarColoreFondoTarjetas(valor) {
-  for (var i = 0; i < document.getElementsByClassName("botones").length; i++) {
-    document.getElementsByClassName("botones")[i].style.backgroundColor = valor.toString();
-  }
-}
+// Eventos
+btnToggle.addEventListener('click', toggleTimer);
+btnReset.addEventListener('click', resetTimer);
+inActive.addEventListener('change', resetTimer);
+inRest.addEventListener('change', resetTimer);
+colorActive.addEventListener('change', updateUI);
+colorRest.addEventListener('change', updateUI);
 
-function CambiarColoresTarjetas(valor) {
-  for (var i = 0; i < document.getElementsByClassName("titulo").length; i++) {
-    document.getElementsByClassName("titulo")[i].style.backgroundColor = valor.toString();
-  }
-  for (var i = 0; i < document.getElementsByClassName("btnTiempo").length; i++) {
-    document.getElementsByClassName("btnTiempo")[i].style.backgroundColor = valor.toString();
-  }
-  for (var i = 0; i < document.getElementsByClassName("color").length; i++) {
-    document.getElementsByClassName("color")[i].style.backgroundColor = valor.toString();
-  }
-  document.getElementById("ReiniciarColoresBtn").style.backgroundColor = valor.toString();
-
-  for (var i = 0; i < document.getElementsByClassName("rangoSegundosMinutos").length; i++) {
-    document.getElementsByClassName("rangoSegundosMinutos")[i].style.backgroundColor = valor.toString();
-  }
-  for (var i = 0; i < document.getElementsByClassName("btnMas5").length; i++) {
-    document.getElementsByClassName("btnMas5")[i].style.backgroundColor = valor.toString();
-  }
-  for (var i = 0; i < document.getElementsByClassName("btnMenos5").length; i++) {
-    document.getElementsByClassName("btnMenos5")[i].style.backgroundColor = valor.toString();
-  }
-  for (var i = 0; i < document.getElementsByClassName("tiempoCustom").length; i++) {
-    document.getElementsByClassName("tiempoCustom")[i].style.backgroundColor = valor.toString();
-  }
-  document.getElementById("btnStart").style.backgroundColor = valor.toString();;
-
-}
-
-function AñadirPredefinidos(t) {
-  if (cambiarVerde) {
-    tiempoVerde = t;
-    tiempoVerdeInicial = t;
-    ActualizarContador("verde");
-  } else {
-    tiempoRojo = t;
-    tiempoRojoInicial = t;
-    ActualizarContador("rojo");
-  }
-}
+// Estado inicial
+usarSegundos = true;
+actualizarEtiquetas();
+activeSecs = obtenerValorSegundos(inActive);
+restSecs = obtenerValorSegundos(inRest);
+remaining = activeSecs;
+updateUI();
