@@ -1,235 +1,71 @@
-*{
+body {
+  background-color: #121212;
+  color: #ffffff;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Cronómetro grande adaptable */
+.display-timer {
+  font-size: 12vw;
+  line-height: 1;
+}
+
+/* Botones personalizados */
+.custom-btn {
+  background-color: #1f1f1f;
+  color: #ffffff;
+  border: 1px solid #333;
+  padding: 0.75rem 2rem;
+  font-size: 1.25rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-btn:hover {
+  background-color: #333333;
+  border-color: #555555;
+}
+
+#flash-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+#flash-overlay.flash-green {
+  background-color: rgba(40, 167, 69, 0.5);
+  opacity: 1;
+}
+
+#flash-overlay.flash-red {
+  background-color: rgba(220, 53, 69, 0.5);
+  opacity: 1;
+}
+
+@keyframes flash-bg {
+  from {
+    background-color: #ffffff20;
+  }
+  to {
+    background-color: #121212;
+  }
+}
+
+/* Ajustes para inputs de color */
+input[type="color"] {
+  height: 3rem;
   padding: 0;
-  margin: 0;
-  text-align: center;
-  font-size: 20px;
-}
-body{
-  background-color: #242424;
-
-
-}
-@font-face {
-  font-family: HK Gortesk;
-  src: url("HKGrotesk-Bold.otf");
-  font-weight: normal;
-  font-style: normal;
+  border: none;
 }
 
-p {
-  font-family: "HK Grotesk";
-  color: #EBEBEB;
-
-}
-
-label{
-  color:#EBEBEB;
-}
-
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    .progreso {
-      overflow: hidden;
-      width: 80%;
-      height: 70px;
-      -webkit-appearance: none;
-      background-color: #8EFF8E;
-      box-shadow: none;
-
-    }
-
-    .progreso::-webkit-slider-runnable-track {
-      height: 70px;
-      width: 100px;
-      -webkit-appearance: none;
-      color: #FF3838;
-
-    }
-
-    .progreso::-webkit-slider-thumb {
-      width: 10px;
-      -webkit-appearance: none;
-      height: 70px;
-      cursor: ew-resize;
-      background: #FF3838;
-
-    }
-
-}
-
-/*Cronometro en sí*/
-#tiempoText{
-  font-size: 200px;
-}
-#tutoText{
-  opacity: 0.6;
-  margin-bottom: 4vh;
-}
-#btnStart{
-  box-shadow: 1px 1px 6px #252525;
-  color: #242424;
-  background-color:#629677;
-  border-radius: 0;
-  border: 0px;
-  padding: 1vh;
-  margin-top: -2vh;
-  margin-bottom: 1vh;
-}
-/*Desplegables en general*/
-.desplegables{
-  margin: auto;
-
-  width: 50%;
-  box-shadow: 1px 1px 6px #252525;
-
-}
-.intervalos{
-  width: 30%;
-  float: left;
-  margin-right: 2%;
-  margin-left: 1%;
-
-
-}
-.predefinidos{
-  width: 30%;
-  float: left;
-  margin-left: 2%;
-
-}
-.apariencia{
-  width: 30%;
-  float: left;
-
-}
-
-/*Comunes en los desplegables*/
-.titulo{
-  width: 100%;
-  height: 50px;
-  background-color:#629677;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-  .tituloText{
-    float: left;
-  }
-  .tituloText p{
-    margin-left: 1vh;
-    font-size: 20px;
-
-  }
-
-  .botonCambio{
-    float: right;
-    width: 6vh;
-    height: 4vh;
-    background-color: #8EFF8E;
-    box-shadow: 1px 1px 6px #252525;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .botonCambio:hover{
-    cursor: pointer;
-  }
-
-  
-
-  .botones{
-    width: 100%;
-    height: 30vh;
-    background-color: #C179B9;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-  }
-
-
-/*Intervalos*/
-  .btnMas5,.btnMenos5{
-    background-color: #629677;
-    width: 5vh;
-    height: 5vh;
-    box-shadow: 1px 1px 6px #252525;
-    float: left;
-    margin-left: 1vh;
-    margin-right: 1vh;
-  }
-  #btnRapidos div{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-    
-
-  .rangoSegundosMinutos{
-    height: 5vh;
-    background-color: #629677;
-    
-    box-shadow: 1px 1px 6px #252525;
-    width: 90%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-  }
-    #s{
-      float: left;
-    }
-    #m{
-      float: right;
-    }
-    
-
-  .tiempoCustom{
-    width: 90%;
-    background-color: #629677;
-    height: 10vh;
-    box-shadow: 1px 1px 6px #252525;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-  }
-
-    #numberInput{
-      font-size: 12px;
-      width: 90%;
-      height: 30%;
-    }
-
-/*Apariencia*/
-
-  .color{
-    width: 25vh;
-    height: 6vh;
-    background-color: #629677;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    float: left;
-    box-shadow: 1px 1px 6px #252525;
-
-  }
-    
-
-  #ReiniciarColoresBtn{
-    width: 14vh;
-    background-color: #629677;
-    box-shadow: 1px 1px 6px #252525;
-  }
-
-/*Predefinidos*/
-  .btnTiempo{
-    width: 5vh;
-    height: 5vh;
-    background-color: #629677;
-    box-shadow: 1px 1px 6px #252525;
-    margin-top: 1vh;
-  }
-    
-#btnsPre{
-  flex-direction: row;
+/* Ajuste de cards */
+.card {
+  border: none;
+  border-radius: 0.75rem;
 }
