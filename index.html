@@ -1,142 +1,80 @@
-// Elementos DOM
-const display = document.getElementById('display');
-const btnToggle = document.getElementById('btn-toggle');
-const btnReset = document.getElementById('btn-reset');
-const progressBar = document.getElementById('progress-bar');
-const inActive = document.getElementById('active-input');
-const inRest = document.getElementById('rest-input');
-const colorActive = document.getElementById('color-active');
-const colorRest = document.getElementById('color-rest');
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cronómetro de Intervalos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
 
-let activeSecs = 0;
-let restSecs = 0;
-let remaining = 0;
+<body class="bg-dark text-light d-flex flex-column justify-content-center" style="height: 100vh;">
 
-let isActivePhase = true;
-let timer = null;
+    <div class="container">
+        <!-- Visualizador -->
+        <div id="display" class="text-center fw-bold mb-4 display-timer">00:00</div>
+        <div id="flash-overlay"></div>
 
-const unitToggle = document.getElementById('unitToggle');
-const labelActive = document.getElementById('label-active');
-const labelRest = document.getElementById('label-rest');
+        <!-- Progreso -->
+        <div class="progress mb-4">
+            <div id="progress-bar" class="progress-bar bg-success" role="progressbar" style="width: 100%;"></div>
+        </div>
 
-let usarSegundos = true;
-// Alerta sonora simple (puedes reemplazarlo con otro sonido si prefieres)
-const beep = new Audio("https://cdn.freesound.org/previews/362/362420_4910111-lq.mp3");
+        <!-- Controles -->
+        <div class="d-flex justify-content-center mb-5">
+            <button id="btn-toggle" class="btn custom-btn me-3">Comenzar</button>
+            <button id="btn-reset" class="btn custom-btn">Reiniciar</button>
+        </div>
 
-// Elemento de flash overlay
-const flashOverlay = document.getElementById('flash-overlay');
+        <!-- Ajustes -->
+        <div class="row g-4">
 
+            <!-- Intervalos -->
+            <div class="col-md-6">
+                <div class="card bg-secondary text-light h-100">
+                    <div class="card-body">
+                        <!-- Toggle unidad -->
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" role="switch" id="unitToggle">
+                            <label class="form-check-label" for="unitToggle">Usar minutos</label>
+                        </div>
 
-// Convierte los valores según la unidad elegida
-function obtenerValorSegundos(input) {
-    const valor = parseInt(input.value) || 0;
-    return usarSegundos ? valor : valor * 60;
-}
+                        <!-- Inputs de tiempo -->
+                        <div class="mb-3">
+                            <label for="active-input" class="form-label" id="label-active">Tiempo activo (min)</label>
+                            <input id="active-input" type="number" class="form-control" min="1" value="1">
+                        </div>
+                        <div>
+                            <label for="rest-input" class="form-label" id="label-rest">Tiempo descanso (min)</label>
+                            <input id="rest-input" type="number" class="form-control" min="1" value="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-// Actualiza las etiquetas según el modo seleccionado
-function actualizarEtiquetas() {
-    if (usarSegundos) {
-        labelActive.textContent = "Tiempo activo (seg)";
-        labelRest.textContent = "Tiempo descanso (seg)";
-    } else {
-        labelActive.textContent = "Tiempo activo (min)";
-        labelRest.textContent = "Tiempo descanso (min)";
-    }
-}
+            <!-- Colores -->
+            <div class="col-md-6">
+                <div class="card bg-secondary text-light h-100">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="color-active" class="form-label">Color activo</label>
+                            <input id="color-active" type="color" class="form-control form-control-color w-100"
+                                value="#28a745">
+                        </div>
+                        <div>
+                            <label for="color-rest" class="form-label">Color descanso</label>
+                            <input id="color-rest" type="color" class="form-control form-control-color w-100"
+                                value="#dc3545">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-// Evento para cambiar el tipo de unidad
-unitToggle.addEventListener('change', () => {
-    usarSegundos = unitToggle.checked;
-    actualizarEtiquetas();
-    resetTimer();
-});
+        </div>
+    </div>
 
+    <script src="main.js"></script>
+</body>
 
-// Actualiza la interfaz basada en estado
-function updateUI() {
-    const mins = Math.floor(remaining / 60);
-    const secs = remaining % 60;
-    display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
-    const total = isActivePhase ? activeSecs : restSecs;
-    const pct = (remaining / total) * 100;
-    progressBar.style.width = `${pct}%`;
-    progressBar.className = 'progress-bar';
-    progressBar.classList.add(isActivePhase ? 'bg-success' : 'bg-danger');
-
-    if (isActivePhase) {
-        progressBar.style.backgroundColor = colorActive.value;
-    } else {
-        progressBar.style.backgroundColor = colorRest.value;
-    }
-
-    btnToggle.textContent = timer ? 'Pausar' : 'Comenzar';
-
-
-}
-
-// Inicia o detiene el cronómetro
-function toggleTimer() {
-    if (timer) {
-        clearInterval(timer);
-        timer = null;
-    } else {
-        activeSecs = obtenerValorSegundos(inActive);
-        restSecs = obtenerValorSegundos(inRest);
-        remaining = isActivePhase ? activeSecs : restSecs;
-        updateUI();
-        timer = setInterval(tick, 1000);
-    }
-    updateUI();
-}
-
-
-// Tick cada segundo
-
-function tick() {
-    remaining--;
-    if (remaining < 0) {
-        isActivePhase = !isActivePhase;
-        activeSecs = obtenerValorSegundos(inActive);
-        restSecs = obtenerValorSegundos(inRest);
-        remaining = isActivePhase ? activeSecs : restSecs;
-
-        // Reproduce sonido
-        beep.play();
-
-        // Flash visual con color del nuevo estado
-        flashOverlay.classList.remove('flash-green', 'flash-red');
-        flashOverlay.classList.add(isActivePhase ? 'flash-green' : 'flash-red');
-        setTimeout(() => {
-            flashOverlay.classList.remove('flash-green', 'flash-red');
-        }, 400);
-    }
-    updateUI();
-}
-
-
-// Reiniciar
-function resetTimer() {
-    clearInterval(timer);
-    timer = null;
-    isActivePhase = true;
-    remaining = activeSecs;
-    updateUI();
-}
-
-// Eventos
-btnToggle.addEventListener('click', toggleTimer);
-btnReset.addEventListener('click', resetTimer);
-inActive.addEventListener('change', resetTimer);
-inRest.addEventListener('change', resetTimer);
-colorActive.addEventListener('change', updateUI);
-colorRest.addEventListener('change', updateUI);
-
-// Estado inicial
-usarSegundos = true;
-actualizarEtiquetas();
-activeSecs = obtenerValorSegundos(inActive);
-restSecs = obtenerValorSegundos(inRest);
-remaining = activeSecs;
-updateUI();
+</html>
