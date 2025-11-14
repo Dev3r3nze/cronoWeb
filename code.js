@@ -7,34 +7,34 @@ const inActive = document.getElementById('active-input');
 const inRest = document.getElementById('rest-input');
 const colorActive = document.getElementById('color-active');
 const colorRest = document.getElementById('color-rest');
-
+let totalTimeText = document.getElementById('total-time');
 
 let activeSecs = 0;
 let restSecs = 0;
 let remaining = 0;
+let totalTime = 0;
 
 let isActivePhase = true;
 let timer = null;
 
+
+// Elementos de configuración
 const unitToggle = document.getElementById('unitToggle');
 const labelActive = document.getElementById('label-active');
 const labelRest = document.getElementById('label-rest');
 
 let usarSegundos = true;
-// Alerta sonora simple (puedes reemplazarlo con otro sonido si prefieres)
 const beep = new Audio("https://cdn.freesound.org/previews/362/362420_4910111-lq.mp3");
 
-// Elemento de flash overlay
 const flashOverlay = document.getElementById('flash-overlay');
 
-
-// Convierte los valores según la unidad elegida
 function obtenerValorSegundos(input) {
     const valor = parseInt(input.value) || 0;
+    remaining = valor;
+    updateUI();
     return usarSegundos ? valor : valor * 60;
 }
 
-// Actualiza las etiquetas según el modo seleccionado
 function actualizarEtiquetas() {
     if (usarSegundos) {
         labelActive.textContent = "Tiempo activo (seg)";
@@ -45,19 +45,21 @@ function actualizarEtiquetas() {
     }
 }
 
-// Evento para cambiar el tipo de unidad
 unitToggle.addEventListener('change', () => {
     usarSegundos = unitToggle.checked;
     actualizarEtiquetas();
-    resetTimer();
+    // Actualiza los valores sin reiniciar
+    activeSecs = obtenerValorSegundos(inActive);
+    restSecs = obtenerValorSegundos(inRest);
+    updateUI();
 });
 
-
-// Actualiza la interfaz basada en estado
 function updateUI() {
+    // Actualizar el tiempo total
     const mins = Math.floor(remaining / 60);
     const secs = remaining % 60;
     display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    totalTimeText.textContent = `Tiempo total: ${String(Math.floor(totalTime / 60)).padStart(2, '0')}:${String(totalTime % 60).padStart(2, '0')}`;
 
     const total = isActivePhase ? activeSecs : restSecs;
     const pct = (remaining / total) * 100;
@@ -65,18 +67,11 @@ function updateUI() {
     progressBar.className = 'progress-bar';
     progressBar.classList.add(isActivePhase ? 'bg-success' : 'bg-danger');
 
-    if (isActivePhase) {
-        progressBar.style.backgroundColor = colorActive.value;
-    } else {
-        progressBar.style.backgroundColor = colorRest.value;
-    }
+    progressBar.style.backgroundColor = isActivePhase ? colorActive.value : colorRest.value;
 
     btnToggle.textContent = timer ? 'Pausar' : 'Comenzar';
-
-
 }
 
-// Inicia o detiene el cronómetro
 function toggleTimer() {
     if (timer) {
         clearInterval(timer);
@@ -85,51 +80,55 @@ function toggleTimer() {
         activeSecs = obtenerValorSegundos(inActive);
         restSecs = obtenerValorSegundos(inRest);
         remaining = isActivePhase ? activeSecs : restSecs;
-        updateUI();
         timer = setInterval(tick, 1000);
     }
     updateUI();
 }
 
-
-// Tick cada segundo
-
 function tick() {
     remaining--;
+    totalTime++;
+
     if (remaining < 0) {
-        isActivePhase = !isActivePhase;
+        // Actualizar duraciones por si han cambiado en tiempo real
         activeSecs = obtenerValorSegundos(inActive);
         restSecs = obtenerValorSegundos(inRest);
+
+        isActivePhase = !isActivePhase;
         remaining = isActivePhase ? activeSecs : restSecs;
 
-        // Reproduce sonido
         beep.play();
-
-        // Flash visual con color del nuevo estado
         flashOverlay.classList.remove('flash-green', 'flash-red');
         flashOverlay.classList.add(isActivePhase ? 'flash-green' : 'flash-red');
         setTimeout(() => {
             flashOverlay.classList.remove('flash-green', 'flash-red');
         }, 400);
     }
+
     updateUI();
 }
 
-
-// Reiniciar
 function resetTimer() {
     clearInterval(timer);
     timer = null;
     isActivePhase = true;
+    activeSecs = obtenerValorSegundos(inActive);
+    restSecs = obtenerValorSegundos(inRest);
     remaining = activeSecs;
     updateUI();
 }
 
-// Eventos
 btnToggle.addEventListener('click', toggleTimer);
 btnReset.addEventListener('click', resetTimer);
-inActive.addEventListener('change', resetTimer);
-inRest.addEventListener('change', resetTimer);
+
+// ✅ Ahora solo actualizan los valores sin reiniciar el cronómetro
+inActive.addEventListener('change', () => {
+    activeSecs = obtenerValorSegundos(inActive);
+});
+inRest.addEventListener('change', () => {
+    restSecs = obtenerValorSegundos(inRest);
+});
+
 colorActive.addEventListener('change', updateUI);
 colorRest.addEventListener('change', updateUI);
 
